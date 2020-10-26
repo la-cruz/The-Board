@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   HashRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import Board from './components/Board/Board';
 import AppToolbar from './components/AppToolbar/AppToolbar';
-import data from './data/data.json';
+import store from './store/index';
+import Error404 from './components/Basics/Error404';
+import './index.scss';
 
 function App() {
-  const [boards, setBoards] = useState(data);
-  const [index, setIndex] = useState(0);
-
   return (
     <div className="app">
       <Router>
-        <AppToolbar boards={boards} setIndex={setIndex} index={index} />
+        <AppToolbar />
         <Switch>
           <Route path="/board/:id">
-            <Board board={boards[index]} index={index} setIndex={setIndex} />
+            <Board />
+          </Route>
+          <Route>
+            <Error404 />
           </Route>
         </Switch>
       </Router>
@@ -27,4 +30,9 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
+);

@@ -6,6 +6,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBoard } from '../../actions/index';
 
 const useStyles = makeStyles({
   list: {
@@ -16,8 +18,10 @@ const useStyles = makeStyles({
   },
 });
 
-function BoardList({ boards, setIndex, setIsMenuOpen }) {
+function BoardList({ setIsMenuOpen }) {
   const classes = useStyles();
+  const boards = useSelector((state) => state.boards);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -29,8 +33,7 @@ function BoardList({ boards, setIndex, setIsMenuOpen }) {
       <List>
         {boards.map((board, index) => (
           <Link to={`/board/${index}`} key={board.title}>
-            <ListItem button onClick={() => { setIndex(index); }}>
-              {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+            <ListItem button onClick={() => { dispatch(setBoard(index)); }}>
               <ListItemText primary={board.title} />
             </ListItem>
           </Link>
@@ -41,8 +44,6 @@ function BoardList({ boards, setIndex, setIsMenuOpen }) {
 }
 
 BoardList.propTypes = {
-  boards: PropTypes.instanceOf(Object).isRequired,
-  setIndex: PropTypes.func.isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 };
 

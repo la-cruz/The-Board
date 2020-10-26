@@ -42,7 +42,7 @@
   },
   {
     "type": "board",
-    "board": "2",
+    "id": "2",
     "title": "Courses",
     "active": false,
     "notes": "",

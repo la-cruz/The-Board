@@ -9,6 +9,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 module.exports = () => (
   {
     entry: './client/index.jsx',
+    devtool: 'eval-source-map',
     output: { // NEW
       path: path.join(__dirname, 'dist'),
       filename: '[name].js',
@@ -28,6 +29,10 @@ module.exports = () => (
           test: /\.(png|svg|jpg|gif)$/,
           loader: 'file-loader',
           options: { name: '/static/[name].[ext]' },
+        },
+        {
+          test: /\.(s[ac]ss)$/i,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
         },
       ],
     },
