@@ -32,7 +32,7 @@ function BottomAppToolbar() {
           </IconButton>
           <div className={classes.grow} />
           <IconButton color="inherit">
-            <ArrowLeft />
+            <ArrowLeft viewBox="-6 0 24 24" />
           </IconButton>
           <IconButton edge="end" color="inherit">
             <ArrowRight />
