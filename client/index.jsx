@@ -18,6 +18,9 @@ function App() {
       <Router>
         <AppToolbar />
         <Switch>
+          <Route path="/board/:id/:idPostit">
+            <Board mobile />
+          </Route>
           <Route path="/board/:id">
             <Board />
           </Route>

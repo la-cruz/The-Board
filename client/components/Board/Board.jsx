@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { isMobile } from 'react-device-detect';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,35 +14,36 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import { ChromePicker } from 'react-color';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoard, deleteBoard, createPostit } from '../../actions/index';
-import Postit from './Postit';
+import PostitList from './PostitList';
+import PostitListMobile from './PostitListMobile';
+import BottomAppToolbar from '../BottomAppToolbar/BottomAppToolbar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    '& > *': {
-      padding: '1rem',
-      margin: theme.spacing(1.2),
-      width: '30%',
-    },
-  },
+const useStyles = makeStyles(() => ({
   errors: {
     color: 'red',
     width: '85%',
     textAlign: 'left',
     display: 'inline-block',
   },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  },
+  grow: {
+    flexGrow: 1,
+  },
 }));
 
-function Board() {
+function Board({ mobile }) {
   const classes = useStyles();
   const { id } = useParams();
+  const location = useLocation();
   const index = useSelector((state) => state.index);
   const board = useSelector((state) => state.boards[index]);
+  const [isMobileDisplay, setIsMobileDisplay] = useState(mobile || isMobile);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPostit, setNewPostit] = useState({
@@ -66,7 +69,9 @@ function Board() {
     if (id !== newPostit.board) {
       setNewPostit({ ...newPostit, board: parseInt(id, 10) + 1 });
     }
-  }, [id]);
+
+    setIsMobileDisplay(mobile || isMobile);
+  }, [location]);
 
   const resetNewPostit = () => {
     setNewPostit({
@@ -118,14 +123,11 @@ function Board() {
                 Ajouter un Postit
               </Button>
             </ButtonGroup>
-            <div className={classes.root}>
-              {
-                board.postits.map((postit, i) => (
-                  postit.visible
-                  && <Postit postit={postit} i={i} key={`${postit.text}-${postit.title}`} />
-                ))
-              }
-            </div>
+            {
+              isMobileDisplay
+                ? <PostitListMobile postits={board.postits} />
+                : <PostitList postits={board.postits} />
+            }
             <Dialog open={isModalOpen} onClose={() => { setIsModalOpen(false); }} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Créer un nouveau Postit</DialogTitle>
               <DialogContent>
@@ -195,8 +197,22 @@ function Board() {
           </>
         )
       }
+      {
+        isMobileDisplay
+        && (
+          <BottomAppToolbar />
+        )
+      }
     </div>
   );
 }
+
+Board.propTypes = {
+  mobile: PropTypes.bool,
+};
+
+Board.defaultProps = {
+  mobile: false,
+};
 
 export default Board;
