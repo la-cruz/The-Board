@@ -7,6 +7,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import ArrowLeft from '@material-ui/icons/ArrowBackIos';
 import ArrowRight from '@material-ui/icons/ArrowForwardIos';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PostitList from './PostitList';
 
 const useStyles = makeStyles(() => ({
@@ -22,6 +24,9 @@ const useStyles = makeStyles(() => ({
 function BottomAppToolbar() {
   const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { id, idPostit } = useParams();
+  const postits = useSelector((state) => state.boards[id].postits)
+    .filter((postit) => postit.visible);
 
   return (
     <>
@@ -31,12 +36,26 @@ function BottomAppToolbar() {
             <MenuIcon />
           </IconButton>
           <div className={classes.grow} />
-          <IconButton color="inherit">
-            <ArrowLeft viewBox="-6 0 24 24" />
-          </IconButton>
-          <IconButton edge="end" color="inherit">
-            <ArrowRight />
-          </IconButton>
+          {
+            postits[parseInt(idPostit, 10) - 1]
+            && (
+              <Link to={`/board/${id}/${parseInt(idPostit, 10) - 1}`}>
+                <IconButton color="inherit">
+                  <ArrowLeft viewBox="-6 0 24 24" />
+                </IconButton>
+              </Link>
+            )
+          }
+          {
+            postits[parseInt(idPostit, 10) + 1]
+            && (
+              <Link to={`/board/${id}/${parseInt(idPostit, 10) + 1}`}>
+                <IconButton edge="end" color="inherit">
+                  <ArrowRight />
+                </IconButton>
+              </Link>
+            )
+          }
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={isMenuOpen} onClose={() => { setIsMenuOpen(false); }}>
