@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { isMobile } from 'react-device-detect';
@@ -7,13 +7,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ButtonGroup } from '@material-ui/core';
+import { ButtonGroup, IconButton } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
+import { OpenInNew } from '@material-ui/icons';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import { ChromePicker } from 'react-color';
 import { useParams } from 'react-router-dom';
@@ -22,6 +23,7 @@ import { setBoard, deleteBoard, createPostit } from '../../actions/index';
 import PostitList from './PostitList';
 import PostitListMobile from './PostitListMobile';
 import BottomAppToolbar from '../BottomAppToolbar/BottomAppToolbar';
+import isFullscreenSupported from '../../lib/isFullscreenSupported';
 
 const useStyles = makeStyles(() => ({
   errors: {
@@ -41,9 +43,11 @@ const useStyles = makeStyles(() => ({
 
 function Board({ mobile }) {
   const classes = useStyles();
+  const boardRef = useRef();
   const { id } = useParams();
   const index = useSelector((state) => state.index);
   const board = useSelector((state) => state.boards[index]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobileDisplay, setIsMobileDisplay] = useState(mobile || isMobile);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,8 +114,21 @@ function Board({ mobile }) {
     resetNewPostit();
   };
 
+  const handleExitFullscreen = () => {
+    setIsFullscreen(false);
+    document.exitFullscreen();
+  };
+
+  const handleEnterFullscreen = () => {
+    setIsFullscreen(true);
+
+    if (isFullscreenSupported()) {
+      boardRef.current.requestFullscreen();
+    }
+  };
+
   return (
-    <div>
+    <div style={{ backgroundColor: 'white' }} ref={boardRef}>
       {
         board !== undefined
         && (
@@ -200,10 +217,10 @@ function Board({ mobile }) {
           </>
         )
       }
-      {/*
-        isFullscreen
+      {
+        !isFullscreen
           ? (
-            <IconButton onClick={setIsFullscreen} className={classes.menuButton} color="inherit">
+            <IconButton onClick={handleEnterFullscreen} className={classes.menuButton} color="inherit">
               <OpenInNew />
             </IconButton>
           )
@@ -212,7 +229,7 @@ function Board({ mobile }) {
               <OpenInNew />
             </IconButton>
           )
-      */}
+      }
       {
         isMobileDisplay
         && (
