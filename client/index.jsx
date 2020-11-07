@@ -42,7 +42,7 @@ function App() {
             <Board mobile />
           </Route>
           <Route path="/board/:id">
-            { isMobile ? <Redirect to="/board/:id/0" /> : <Board /> }
+            { isMobile ? <Redirect from="/board/:id" to="/board/:id/0" /> : <Board /> }
           </Route>
           <Route>
             <Error404 />
