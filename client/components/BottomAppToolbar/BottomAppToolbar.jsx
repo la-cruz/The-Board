@@ -19,6 +19,9 @@ const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 1,
   },
+  svgIcon: {
+    color: 'white',
+  },
 }));
 
 function BottomAppToolbar() {
@@ -41,7 +44,7 @@ function BottomAppToolbar() {
             && (
               <Link to={`/board/${id}/${parseInt(idPostit, 10) - 1}`}>
                 <IconButton color="inherit">
-                  <ArrowLeft viewBox="-6 0 24 24" />
+                  <ArrowLeft viewBox="-6 0 24 24" className={classes.svgIcon} />
                 </IconButton>
               </Link>
             )
@@ -51,7 +54,7 @@ function BottomAppToolbar() {
             && (
               <Link to={`/board/${id}/${parseInt(idPostit, 10) + 1}`}>
                 <IconButton edge="end" color="inherit">
-                  <ArrowRight />
+                  <ArrowRight className={classes.svgIcon} />
                 </IconButton>
               </Link>
             )

@@ -14,7 +14,8 @@ import AppToolbar from './components/AppToolbar/AppToolbar';
 import store from './store/index';
 import Error404 from './components/Basics/Error404';
 import { setBoard } from './actions';
-import './index.scss';
+import './assets/sass/index.scss';
+import './assets/sass/style.scss';
 
 function App() {
   const dispatch = useDispatch();

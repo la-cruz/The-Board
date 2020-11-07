@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import BoardList from './BoardList';
@@ -62,7 +63,7 @@ function AppToolbar() {
               && boards[index].title
             }
           </Typography>
-          <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }}>
+          <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }} startIcon={<AddBoxIcon />}>
             Créer un Board
           </Button>
         </Toolbar>

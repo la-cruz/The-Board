@@ -13,6 +13,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import { ChromePicker } from 'react-color';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -114,14 +116,6 @@ function Board({ mobile }) {
         board !== undefined
         && (
           <>
-            <ButtonGroup variant="contained">
-              <Button color="secondary" onClick={() => { handleDeleteBoard(); }}>
-                Supprimer le Board
-              </Button>
-              <Button color="primary" onClick={() => { setIsModalOpen(true); }}>
-                Ajouter un Postit
-              </Button>
-            </ButtonGroup>
             {
               isMobileDisplay
                 ? <PostitListMobile postits={board.postits} />
@@ -193,6 +187,16 @@ function Board({ mobile }) {
                 </Button>
               </DialogActions>
             </Dialog>
+            <div className="btn-group">
+              <ButtonGroup variant="contained">
+                <Button color="primary" onClick={() => { setIsModalOpen(true); }} startIcon={<AddIcon />}>
+                  Ajouter un Postit
+                </Button>
+                <Button color="secondary" onClick={() => { handleDeleteBoard(); }} startIcon={<DeleteSweepIcon />}>
+                  Supprimer le Board
+                </Button>
+              </ButtonGroup>
+            </div>
           </>
         )
       }
