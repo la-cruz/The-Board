@@ -84,7 +84,7 @@ function Board({ mobile }) {
   };
 
   const handleDeleteBoard = () => {
-    dispatch(deleteBoard(board.id));
+    dispatch(deleteBoard(board.id, { propagate: true }));
   };
 
   const handleCreatePostit = () => {
@@ -97,7 +97,7 @@ function Board({ mobile }) {
     setErrors(newErrors);
 
     if (newErrors.title === 'noError' && newErrors.text === 'noError') {
-      dispatch(createPostit(newPostit));
+      dispatch(createPostit(newPostit, { propagate: true }));
       setIsModalOpen(false);
       resetNewPostit();
     }
@@ -196,6 +196,19 @@ function Board({ mobile }) {
           </>
         )
       }
+      {/*
+        isFullscreen
+          ? (
+            <IconButton onClick={setIsFullscreen} className={classes.menuButton} color="inherit">
+              <OpenInNew />
+            </IconButton>
+          )
+          : (
+            <IconButton onClick={handleExitFullscreen} className={classes.menuButton} color="inherit">
+              <OpenInNew />
+            </IconButton>
+          )
+      */}
       {
         isMobileDisplay
         && (
@@ -206,6 +219,8 @@ function Board({ mobile }) {
   );
 }
 
+export default Board;
+
 Board.propTypes = {
   mobile: PropTypes.bool,
 };
@@ -213,5 +228,3 @@ Board.propTypes = {
 Board.defaultProps = {
   mobile: false,
 };
-
-export default Board;

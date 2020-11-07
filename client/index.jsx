@@ -13,7 +13,13 @@ import Board from './components/Board/Board';
 import AppToolbar from './components/AppToolbar/AppToolbar';
 import store from './store/index';
 import Error404 from './components/Basics/Error404';
-import { setBoard } from './actions';
+import {
+  createBoard,
+  createPostit,
+  deleteBoard,
+  deletePostit,
+  setBoard,
+} from './actions';
 import './index.scss';
 
 function App() {
@@ -24,7 +30,22 @@ function App() {
     socket.on('action', (params) => {
       switch (params.type) {
         case 'set_board':
+          console.log('j\'ai reçu un setBoard');
           dispatch(setBoard(params.value, { propagate: false }));
+          break;
+        case 'create_board':
+          console.log('j\'ai reçu un setBoard');
+          dispatch(createBoard(params.value, { propagate: false }));
+          break;
+        case 'delete_board':
+          dispatch(deleteBoard(params.value, { propagate: false }));
+          break;
+        case 'create_postit':
+          dispatch(createPostit(params.value, { propagate: false }));
+          break;
+        case 'delete_postit':
+          console.log('j\'ai reçu un deletePostit');
+          dispatch(deletePostit(params.value, { propagate: false }));
           break;
         default:
           break;

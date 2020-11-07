@@ -20,7 +20,9 @@ const useStyles = makeStyles({
 function PostitList({ setIsMenuOpen }) {
   const classes = useStyles();
   const index = useSelector((state) => state.index);
-  const postits = useSelector((state) => state.boards[index].postits);
+  const postits = useSelector(
+    (state) => state.boards[index].postits.filter((postit) => postit.visible),
+  );
 
   return (
     <div

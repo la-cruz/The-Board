@@ -33,7 +33,9 @@ function Postit({ postit, i }) {
           bottom: '10px',
           right: '10px',
         }}
-        onClick={() => { dispatch(deletePostit({ id: parseInt(id, 10), idToDelete: i })); }}
+        onClick={() => {
+          dispatch(deletePostit({ id: parseInt(id, 10), idToDelete: i }, { propagate: true }));
+        }}
       >
         <DeleteIcon size="small" />
       </Fab>

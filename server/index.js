@@ -19,7 +19,7 @@ app.use(express.static(DIST_DIR));
 
 io.on('connection', (socket) => {
   socket.on('action', (params) => {
-    io.emit('action', params);
+    socket.broadcast.emit('action', params);
   });
   socket.on('disconnect', () => console.log('Client disconnected'));
 });

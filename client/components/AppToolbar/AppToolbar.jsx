@@ -39,7 +39,7 @@ function AppToolbar() {
   const index = useSelector((state) => state.index);
 
   const handleCreateBoard = () => {
-    dispatch(createBoard({ title: boardTitle, notes: '' }));
+    dispatch(createBoard({ title: boardTitle, notes: '' }, { propagate: true }));
     setIsModalOpen(false);
     setBoardTitle('');
   };
