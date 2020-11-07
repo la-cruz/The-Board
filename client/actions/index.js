@@ -15,9 +15,10 @@ export const deleteBoard = (id) => ({
   id,
 });
 
-export const setBoard = (index) => ({
+export const setBoard = (index, meta) => ({
   type: SET_BOARD,
   index,
+  meta,
 });
 
 export const createPostit = (payload) => ({

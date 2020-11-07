@@ -33,7 +33,7 @@ function BoardList({ setIsMenuOpen }) {
       <List>
         {boards.map((board, index) => (
           <Link to={`/board/${index}`} key={board.title}>
-            <ListItem button onClick={() => { dispatch(setBoard(index)); }}>
+            <ListItem button onClick={() => { dispatch(setBoard(index, { propagate: true })); }}>
               <ListItemText primary={board.title} />
             </ListItem>
           </Link>
