@@ -62,7 +62,7 @@ function Board({ mobile }) {
   });
 
   useEffect(() => {
-    if (id !== index) {
+    if (parseInt(id, 10) !== index) {
       dispatch(setBoard(parseInt(id, 10), { propagate: true }));
     }
 
@@ -71,7 +71,7 @@ function Board({ mobile }) {
     }
 
     setIsMobileDisplay(mobile || isMobile);
-  }, [location]);
+  }, [id]);
 
   const resetNewPostit = () => {
     setNewPostit({
