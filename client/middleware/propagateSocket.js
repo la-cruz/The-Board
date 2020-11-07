@@ -11,11 +11,12 @@ import {
   deletePostit,
   setBoard,
 } from '../actions/index';
+// eslint-disable-next-line import/no-cycle
+import store from '../store/index';
 
-const propagateSocket = (storeAPI) => (next) => (action) => {
-  const socket = io();
-  const { dispatch } = storeAPI;
+const socket = io();
 
+const propagateSocket = () => (next) => (action) => {
   if (action.meta.propagate) {
     switch (action.type) {
       case SET_BOARD:
@@ -47,32 +48,29 @@ const propagateSocket = (storeAPI) => (next) => (action) => {
     window.location = newUrl;
   }
 
-  socket.on('action', (params) => {
-    switch (params.type) {
-      case 'set_board':
-        console.log('j\'ai reçu un setBoard');
-        dispatch(setBoard(params.value, { propagate: false }));
-        break;
-      case 'create_board':
-        console.log('j\'ai reçu un setBoard');
-        dispatch(createBoard(params.value, { propagate: false }));
-        break;
-      case 'delete_board':
-        dispatch(deleteBoard(params.value, { propagate: false }));
-        break;
-      case 'create_postit':
-        dispatch(createPostit(params.value, { propagate: false }));
-        break;
-      case 'delete_postit':
-        console.log('j\'ai reçu un deletePostit');
-        dispatch(deletePostit(params.value, { propagate: false }));
-        break;
-      default:
-        break;
-    }
-  });
-
   next(action);
 };
+
+socket.on('action', (params) => {
+  switch (params.type) {
+    case 'set_board':
+      store.dispatch(setBoard(params.value, { propagate: false }));
+      break;
+    case 'create_board':
+      store.dispatch(createBoard(params.value, { propagate: false }));
+      break;
+    case 'delete_board':
+      store.dispatch(deleteBoard(params.value, { propagate: false }));
+      break;
+    case 'create_postit':
+      store.dispatch(createPostit(params.value, { propagate: false }));
+      break;
+    case 'delete_postit':
+      store.dispatch(deletePostit(params.value, { propagate: false }));
+      break;
+    default:
+      break;
+  }
+});
 
 export default propagateSocket;
