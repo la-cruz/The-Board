@@ -13,13 +13,14 @@ function Postit({ postit, i }) {
 
   return (
     <Paper elevation={4} style={{ position: 'relative', backgroundColor: '#F7F77E' }}>
-      <h5>{`${i}. ${postit.title}`}</h5>
+      <h3 className="title-postit">{`${i}. ${postit.title}`}</h3>
       <p>{ postit.text }</p>
       <span style={{
         backgroundColor: postit.color,
+        boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.75)',
         position: 'absolute',
-        width: '25px',
-        height: '25px',
+        width: '40px',
+        height: '40px',
         borderRadius: '50px',
         top: '10px',
         right: '10px',

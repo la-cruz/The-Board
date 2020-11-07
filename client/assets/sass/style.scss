@@ -1,0 +1,12 @@
+.btn-group {
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  button {
+    svg {
+      padding-right: 1rem;
+    }
+  }
+}

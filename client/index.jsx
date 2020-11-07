@@ -20,7 +20,8 @@ import {
   deletePostit,
   setBoard,
 } from './actions';
-import './index.scss';
+import './assets/sass/index.scss';
+import './assets/sass/style.scss';
 
 function App() {
   const dispatch = useDispatch();
