@@ -9,6 +9,7 @@ import {
 import { Provider } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import Board from './components/Board/Board';
+import Home from './components/Basics/Home';
 import AppToolbar from './components/AppToolbar/AppToolbar';
 import store from './store/index';
 import Error404 from './components/Basics/Error404';
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route exact path="/board/:id">
             <Board />
+          </Route>
+          <Route exact path="/">
+            <Home />
           </Route>
           <Route>
             <Error404 />
