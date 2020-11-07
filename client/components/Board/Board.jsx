@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import { ChromePicker } from 'react-color';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoard, deleteBoard, createPostit } from '../../actions/index';
 import PostitList from './PostitList';
@@ -40,7 +40,6 @@ const useStyles = makeStyles(() => ({
 function Board({ mobile }) {
   const classes = useStyles();
   const { id } = useParams();
-  const location = useLocation();
   const index = useSelector((state) => state.index);
   const board = useSelector((state) => state.boards[index]);
   const [isMobileDisplay, setIsMobileDisplay] = useState(mobile || isMobile);
