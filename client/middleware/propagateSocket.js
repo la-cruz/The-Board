@@ -5,10 +5,16 @@ import {
   DELETE_BOARD,
   DELETE_POSTIT,
   SET_BOARD,
+  createBoard,
+  createPostit,
+  deleteBoard,
+  deletePostit,
+  setBoard,
 } from '../actions/index';
 
-const propagateSocket = () => (next) => (action) => {
+const propagateSocket = (storeAPI) => (next) => (action) => {
   const socket = io();
+  const { dispatch } = storeAPI;
 
   if (action.meta.propagate) {
     switch (action.type) {
@@ -40,6 +46,31 @@ const propagateSocket = () => (next) => (action) => {
 
     window.location = newUrl;
   }
+
+  socket.on('action', (params) => {
+    switch (params.type) {
+      case 'set_board':
+        console.log('j\'ai reçu un setBoard');
+        dispatch(setBoard(params.value, { propagate: false }));
+        break;
+      case 'create_board':
+        console.log('j\'ai reçu un setBoard');
+        dispatch(createBoard(params.value, { propagate: false }));
+        break;
+      case 'delete_board':
+        dispatch(deleteBoard(params.value, { propagate: false }));
+        break;
+      case 'create_postit':
+        dispatch(createPostit(params.value, { propagate: false }));
+        break;
+      case 'delete_postit':
+        console.log('j\'ai reçu un deletePostit');
+        dispatch(deletePostit(params.value, { propagate: false }));
+        break;
+      default:
+        break;
+    }
+  });
 
   next(action);
 };
