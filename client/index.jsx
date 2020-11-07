@@ -38,11 +38,15 @@ function App() {
       <Router>
         <AppToolbar />
         <Switch>
+          {/* {
+            isMobile
+            && <Redirect exact from="/board/:id" to="/board/:id/0" />
+          } */}
+          <Route path="/board/:id">
+            { isMobile ? <Redirect push to="/0" /> : <Board />}
+          </Route>
           <Route path="/board/:id/:idPostit">
             <Board mobile />
-          </Route>
-          <Route path="/board/:id">
-            { isMobile ? <Redirect from="/board/:id" to="/board/:id/0" /> : <Board /> }
           </Route>
           <Route>
             <Error404 />
