@@ -42,11 +42,11 @@ function App() {
             isMobile
             && <Redirect exact from="/board/:id" to="/board/:id/0" />
           }
-          <Route path="/board/:id">
-            <Board />
-          </Route>
-          <Route path="/board/:id/:idPostit">
+          <Route exact path="/board/:id/:idPostit">
             <Board mobile />
+          </Route>
+          <Route exact path="/board/:id">
+            <Board />
           </Route>
           <Route>
             <Error404 />
