@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from '../reducers/index';
+// eslint-disable-next-line import/no-cycle
 import propagateSocket from '../middleware/propagateSocket';
 
 /* eslint-disable no-underscore-dangle */
