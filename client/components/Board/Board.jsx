@@ -7,7 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ButtonGroup, IconButton } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
@@ -160,7 +159,7 @@ function Board({ mobile }) {
                 />
                 {
                   errors.title !== 'noError'
-                  && <span className={classes.errors}>{ errors.title }</span>
+                  && <span className={classes.errors}>{errors.title}</span>
                 }
                 <TextField
                   margin="dense"
@@ -173,7 +172,7 @@ function Board({ mobile }) {
                 />
                 {
                   errors.text !== 'noError'
-                  && <span className={classes.errors}>{ errors.text }</span>
+                  && <span className={classes.errors}>{errors.text}</span>
                 }
                 <FormControlLabel
                   control={(
@@ -205,30 +204,18 @@ function Board({ mobile }) {
               </DialogActions>
             </Dialog>
             <div className="btn-group">
-              <ButtonGroup variant="contained">
-                <Button color="primary" onClick={() => { setIsModalOpen(true); }} startIcon={<AddIcon />}>
-                  Ajouter un Postit
-                </Button>
-                <Button color="secondary" onClick={() => { handleDeleteBoard(); }} startIcon={<DeleteSweepIcon />}>
-                  Supprimer le Board
-                </Button>
-              </ButtonGroup>
+              <Button variant="contained" color="primary" onClick={() => { setIsModalOpen(true); }} startIcon={<AddIcon />}>
+                Ajouter un Postit
+              </Button>
+              <Button variant="contained" color="secondary" onClick={() => { handleDeleteBoard(); }} startIcon={<DeleteSweepIcon />}>
+                Supprimer le Board
+              </Button>
+              <Button variant="outlined" color="primary" onClick={!isFullscreen ? handleEnterFullscreen : handleExitFullscreen}>
+                <OpenInNew />
+              </Button>
             </div>
           </>
         )
-      }
-      {
-        !isFullscreen
-          ? (
-            <IconButton onClick={handleEnterFullscreen} className={classes.menuButton} color="inherit">
-              <OpenInNew />
-            </IconButton>
-          )
-          : (
-            <IconButton onClick={handleExitFullscreen} className={classes.menuButton} color="inherit">
-              <OpenInNew />
-            </IconButton>
-          )
       }
       {
         isMobileDisplay

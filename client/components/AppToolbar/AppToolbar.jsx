@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import Drawer from '@material-ui/core/Drawer';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  homeIcon: {
+    color: 'white',
+    paddingRight: '1rem',
   },
 }));
 
@@ -63,6 +68,11 @@ function AppToolbar() {
               && boards[index].title
             }
           </Typography>
+          <Link to="/" className={classes.homeIcon}>
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <HomeIcon />
+            </IconButton>
+          </Link>
           <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }} startIcon={<AddBoxIcon />}>
             Créer un Board
           </Button>
