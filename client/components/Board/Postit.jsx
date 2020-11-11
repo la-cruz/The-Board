@@ -8,6 +8,13 @@ import { useDispatch } from 'react-redux';
 import { deletePostit, resetDrawPoint } from '../../actions/index';
 import Canvas from './Canvas';
 import EraserIcon from '../../assets/images/eraser.svg';
+import OneDollar from '../../lib/oneDollar';
+import {
+  circle,
+  triangle,
+  chevronLeft,
+  chevronRight,
+} from '../../data/gesture';
 
 function Postit({ postit, index }) {
   const dispatch = useDispatch();
@@ -17,6 +24,21 @@ function Postit({ postit, index }) {
     clickY: postit.clickY,
     clickDrag: postit.clickDrag,
   };
+
+  const options = {
+    score: 80, // The similarity threshold to apply the callback(s)
+    parts: 64, // The number of resampling points
+    step: 2, // The degree of one single rotation step
+    angle: 45, // The last degree of rotation
+    size: 250, // The width and height of the scaling bounding box
+  };
+
+  const recognizer = new OneDollar(options);
+
+  recognizer.add('triangle', triangle);
+  recognizer.add('circle', circle);
+  recognizer.add('chevron-left', chevronLeft);
+  recognizer.add('chevron-right', chevronRight);
 
   return (
     <Paper
@@ -30,7 +52,7 @@ function Postit({ postit, index }) {
     >
       <h3 className="title-postit">{`${index}. ${postit.title}`}</h3>
       <p>{ postit.text }</p>
-      <Canvas drawing={drawing} index={index} />
+      <Canvas drawing={drawing} index={index} recognizer={recognizer} />
       <span style={{
         backgroundColor: postit.color,
         boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.75)',

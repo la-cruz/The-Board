@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addDrawPoint } from '../../actions/index';
 
-function Canvas({ drawing, index }) {
+function Canvas({ drawing, index, recognizer }) {
   const { clickX, clickY, clickDrag } = drawing;
   const { id } = useParams();
   const dispatch = useDispatch();
+  let gesturePoint = [];
   let paint = false;
 
   // Si vous utilisez des Class Components plutôt que des function Components, voir ici https://stackoverflow.com/a/54620836
@@ -46,9 +47,9 @@ function Canvas({ drawing, index }) {
   }
 
   function pointerDownHandler(ev) {
-    if (ev.pointerType === 'mouse') {
-      return;
-    }
+    // if (ev.pointerType === 'mouse') {
+    //   return;
+    // }
 
     const {
       width,
@@ -58,12 +59,17 @@ function Canvas({ drawing, index }) {
     } = canvasRef.current.getBoundingClientRect();
 
     paint = true;
-    addClick(
-      (ev.pageX - left) / width,
-      (ev.pageY - top) / height,
-      false,
-    );
-    redraw();
+
+    if (ev.pointerType === 'mouse') {
+      gesturePoint.push([(ev.pageX - left) / width, (ev.pageY - top) / height]);
+    } else {
+      addClick(
+        (ev.pageX - left) / width,
+        (ev.pageY - top) / height,
+        false,
+      );
+      redraw();
+    }
   }
 
   function pointerMoveHandler(ev) {
@@ -75,26 +81,35 @@ function Canvas({ drawing, index }) {
         left,
       } = canvasRef.current.getBoundingClientRect();
 
-      addClick(
-        (ev.pageX - left) / width,
-        (ev.pageY - top) / height,
-        true,
-      );
-      redraw();
+      if (ev.pointerType === 'mouse') {
+        gesturePoint.push([(ev.pageX - left) / width, (ev.pageY - top) / height]);
+      } else {
+        addClick(
+          (ev.pageX - left) / width,
+          (ev.pageY - top) / height,
+          true,
+        );
+        redraw();
+      }
     }
   }
 
-  function pointerUpEvent() {
+  function pointerUpEvent(ev) {
     paint = false;
-    dispatch(addDrawPoint({
-      clickX,
-      clickY,
-      clickDrag,
-      board: parseInt(id, 10) + 1,
-      index,
-    }, {
-      propagate: true,
-    }));
+    if (ev.pointerType === 'mouse') {
+      // TODO recognizer.check(gesturePoint)
+      gesturePoint = [];
+    } else {
+      dispatch(addDrawPoint({
+        clickX,
+        clickY,
+        clickDrag,
+        board: parseInt(id, 10) + 1,
+        index,
+      }, {
+        propagate: true,
+      }));
+    }
   }
 
   useEffect(() => {
@@ -114,6 +129,7 @@ function Canvas({ drawing, index }) {
 Canvas.propTypes = {
   drawing: PropTypes.instanceOf(Object).isRequired,
   index: PropTypes.number.isRequired,
+  recognizer: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default Canvas;
