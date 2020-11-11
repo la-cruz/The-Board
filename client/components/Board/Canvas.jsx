@@ -97,7 +97,7 @@ function Canvas({ drawing, index, recognizer }) {
   function pointerUpEvent(ev) {
     paint = false;
     if (ev.pointerType === 'mouse') {
-      // TODO recognizer.check(gesturePoint)
+      recognizer.check(gesturePoint);
       gesturePoint = [];
     } else {
       dispatch(addDrawPoint({
