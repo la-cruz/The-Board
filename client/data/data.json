@@ -12,7 +12,10 @@
         "title": "TP 1",
         "text": "Le TP porte sur des rappels de developpement Web",
         "visible": false,
-        "color": "#CCC"
+        "color": "#CCC",
+        "clickX": [],
+        "clickY": [],
+        "clickDrag": []
       },
       {
         "type": "postit",
@@ -20,7 +23,10 @@
         "title": "TP 2",
         "text": "Le TP porte sur la creation d'un outil de presentation HTML",
         "visible": true,
-        "color": "#00E"
+        "color": "#00E",
+        "clickX": [],
+        "clickY": [],
+        "clickDrag": []
       },
       {
         "type": "postit",
@@ -28,7 +34,10 @@
         "title": "TP 3",
         "text": "Le TP 3",
         "visible": true,
-        "color": "#00E"
+        "color": "#00E",
+        "clickX": [],
+        "clickY": [],
+        "clickDrag": []
       },
       {
         "type": "postit",
@@ -36,7 +45,10 @@
         "title": "TP 4",
         "text": "Le TP 4",
         "visible": true,
-        "color": "#0E0"
+        "color": "#0E0",
+        "clickX": [],
+        "clickY": [],
+        "clickDrag": []
       }
     ]
   },

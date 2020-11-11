@@ -46,7 +46,6 @@ function Board({ mobile }) {
   const { id } = useParams();
   const index = useSelector((state) => state.index);
   const board = useSelector((state) => state.boards[index]);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobileDisplay, setIsMobileDisplay] = useState(mobile || isMobile);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,7 +69,7 @@ function Board({ mobile }) {
       dispatch(setBoard(parseInt(id, 10), { propagate: true }));
     }
 
-    if (id !== newPostit.board) {
+    if (id !== newPostit.board + 1) {
       setNewPostit({ ...newPostit, board: parseInt(id, 10) + 1 });
     }
 
@@ -113,17 +112,12 @@ function Board({ mobile }) {
     resetNewPostit();
   };
 
-  const handleExitFullscreen = () => {
-    setIsFullscreen(false);
-    document.exitFullscreen();
-  };
-
-  const handleEnterFullscreen = () => {
-    setIsFullscreen(true);
-
-    if (isFullscreenSupported()) {
-      boardRef.current.requestFullscreen();
-    }
+  const toggleFullscreen = () => {
+    document.exitFullscreen().catch(() => {
+      if (isFullscreenSupported()) {
+        boardRef.current.requestFullscreen();
+      }
+    });
   };
 
   return (
@@ -134,8 +128,8 @@ function Board({ mobile }) {
           <>
             {
               isMobileDisplay
-                ? <PostitListMobile postits={board.postits} />
-                : <PostitList postits={board.postits} />
+                ? <PostitListMobile postits={board.postits.filter((postit) => postit.visible)} />
+                : <PostitList postits={board.postits.filter((postit) => postit.visible)} />
             }
             <Dialog open={isModalOpen} onClose={() => { setIsModalOpen(false); }} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Créer un nouveau Postit</DialogTitle>
@@ -210,9 +204,14 @@ function Board({ mobile }) {
               <Button variant="contained" color="secondary" onClick={() => { handleDeleteBoard(); }} startIcon={<DeleteSweepIcon />}>
                 Supprimer le Board
               </Button>
-              <Button variant="outlined" color="primary" onClick={!isFullscreen ? handleEnterFullscreen : handleExitFullscreen}>
-                <OpenInNew />
-              </Button>
+              {
+                !isMobile
+                && (
+                  <Button variant="outlined" color="primary" onClick={toggleFullscreen}>
+                    <OpenInNew />
+                  </Button>
+                )
+              }
             </div>
           </>
         )

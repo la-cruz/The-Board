@@ -4,6 +4,8 @@ import {
   CREATE_BOARD,
   DELETE_BOARD,
   SET_BOARD,
+  ADD_DRAW_POINT,
+  RESET_DRAW_POINT,
 } from '../actions/index';
 import data from '../data/data.json';
 
@@ -43,6 +45,9 @@ const rootReducer = (state = initialState, action) => {
                 text: action.payload.text,
                 visible: action.payload.visible,
                 color: action.payload.color,
+                clickX: [],
+                clickY: [],
+                clickDrag: [],
               },
             ],
           },
@@ -65,6 +70,54 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         index: action.index,
+      };
+    case ADD_DRAW_POINT:
+      return {
+        ...state,
+        boards: [
+          ...state.boards.slice(0, action.payload.board - 1),
+          {
+            ...state.boards[action.payload.board - 1],
+            postits: [
+              ...state.boards[action.payload.board - 1].postits.slice(0, action.payload.index),
+              {
+                ...state.boards[action.payload.board - 1].postits[action.payload.index],
+                clickX: action.payload.clickX,
+                clickY: action.payload.clickY,
+                clickDrag: action.payload.clickDrag,
+              },
+              ...state.boards[action.payload.board - 1].postits.slice(
+                action.payload.index + 1,
+                state.boards[action.payload.board - 1].postits.length,
+              ),
+            ],
+          },
+          ...state.boards.slice(action.payload.board, state.boards.length),
+        ],
+      };
+    case RESET_DRAW_POINT:
+      return {
+        ...state,
+        boards: [
+          ...state.boards.slice(0, action.payload.board - 1),
+          {
+            ...state.boards[action.payload.board - 1],
+            postits: [
+              ...state.boards[action.payload.board - 1].postits.slice(0, action.payload.index),
+              {
+                ...state.boards[action.payload.board - 1].postits[action.payload.index],
+                clickX: [],
+                clickY: [],
+                clickDrag: [],
+              },
+              ...state.boards[action.payload.board - 1].postits.slice(
+                action.payload.index + 1,
+                state.boards[action.payload.board - 1].postits.length,
+              ),
+            ],
+          },
+          ...state.boards.slice(action.payload.board, state.boards.length),
+        ],
       };
     default:
       return state;

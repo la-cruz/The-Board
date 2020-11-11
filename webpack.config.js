@@ -26,7 +26,11 @@ module.exports = () => (
           use: ['babel-loader', 'eslint-loader'],
         },
         {
-          test: /\.(png|svg|jpg|gif)$/,
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.(png|jpg|gif)$/,
           loader: 'file-loader',
           options: { name: '/static/[name].[ext]' },
         },

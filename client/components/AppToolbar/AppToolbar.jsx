@@ -15,7 +15,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import BoardList from './BoardList';
 import { createBoard } from '../../actions/index';
 
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AppToolbar() {
   const classes = useStyles();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [boardTitle, setBoardTitle] = useState('');
@@ -65,6 +66,7 @@ function AppToolbar() {
           <Typography variant="h6" className={classes.title}>
             {
               boards.length > index
+              && location.pathname !== '/'
               && boards[index].title
             }
           </Typography>

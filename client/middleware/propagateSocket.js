@@ -10,6 +10,8 @@ import {
   deleteBoard,
   deletePostit,
   setBoard,
+  addDrawPoint,
+  ADD_DRAW_POINT,
 } from '../actions/index';
 // eslint-disable-next-line import/no-cycle
 import store from '../store/index';
@@ -33,6 +35,9 @@ const propagateSocket = () => (next) => (action) => {
         break;
       case DELETE_POSTIT:
         socket.emit('action', { type: 'delete_postit', value: action.payload });
+        break;
+      case ADD_DRAW_POINT:
+        socket.emit('action', { type: 'add_draw_point', value: action.payload });
         break;
       default:
         break;
@@ -67,6 +72,9 @@ socket.on('action', (params) => {
       break;
     case 'delete_postit':
       store.dispatch(deletePostit(params.value, { propagate: false }));
+      break;
+    case 'add_draw_point':
+      store.dispatch(addDrawPoint(params.value, { propagate: false }));
       break;
     default:
       break;

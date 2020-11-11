@@ -23,8 +23,7 @@ function PostitList({ postits }) {
     <div className={classes.root}>
       {
         postits.map((postit, i) => (
-          postit.visible
-          && <Postit postit={postit} i={i} key={`${postit.text}-${postit.title}`} />
+          <Postit postit={postit} index={i} key={`${postit.text}-${postit.title}`} />
         ))
       }
     </div>

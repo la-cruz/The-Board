@@ -25,7 +25,7 @@ function PostitListMobile({ postits }) {
     <div className={classes.root}>
       {
         postits[idPostit]
-        && <Postit postit={postits[idPostit]} i={parseInt(idPostit, 10)} />
+        && <Postit postit={postits[idPostit]} index={parseInt(idPostit, 10)} />
       }
     </div>
   );
