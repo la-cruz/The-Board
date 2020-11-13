@@ -129,10 +129,12 @@ function Canvas({ drawing, index, recognizer }) {
       if (geste.recognized) {
         switch (geste.name) {
           case 'chevron-left':
-            history.push(`/board/${parseInt(id, 10)}/${index - 1}`);
+            if (id !== '0') {
+              history.push(`/board/${parseInt(id, 10) - 1}`);
+            }
             break;
           case 'chevron-right':
-            history.push(`/board/${parseInt(id, 10)}/${index + 1}`);
+            history.push(`/board/${parseInt(id, 10) + 1}`);
             break;
           default:
             break;
