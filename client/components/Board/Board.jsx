@@ -120,6 +120,21 @@ function Board({ mobile }) {
     });
   };
 
+  const visiblePostitArrayBuilder = () => {
+    const newArray = [];
+
+    board.postits.forEach((postit, i) => {
+      if (postit.visible) {
+        newArray.push({
+          index: i,
+          postit,
+        });
+      }
+    });
+
+    return newArray;
+  };
+
   return (
     <div style={{ backgroundColor: 'white' }} ref={boardRef}>
       {
@@ -128,8 +143,8 @@ function Board({ mobile }) {
           <>
             {
               isMobileDisplay
-                ? <PostitListMobile postits={board.postits.filter((postit) => postit.visible)} />
-                : <PostitList postits={board.postits.filter((postit) => postit.visible)} />
+                ? <PostitListMobile postits={visiblePostitArrayBuilder()} />
+                : <PostitList postits={visiblePostitArrayBuilder()} />
             }
             <Dialog open={isModalOpen} onClose={() => { setIsModalOpen(false); }} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Créer un nouveau Postit</DialogTitle>

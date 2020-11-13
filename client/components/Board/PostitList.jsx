@@ -22,8 +22,8 @@ function PostitList({ postits }) {
   return (
     <div className={classes.root}>
       {
-        postits.map((postit, i) => (
-          <Postit postit={postit} index={i} key={`${postit.text}-${postit.title}`} />
+        postits.map(({ index, postit }) => (
+          <Postit postit={postit} index={index} key={`${postit.text}-${postit.title}`} />
         ))
       }
     </div>

@@ -12,6 +12,8 @@ import {
   setBoard,
   addDrawPoint,
   ADD_DRAW_POINT,
+  resetDrawPoint,
+  RESET_DRAW_POINT,
 } from '../actions/index';
 // eslint-disable-next-line import/no-cycle
 import store from '../store/index';
@@ -38,6 +40,9 @@ const propagateSocket = () => (next) => (action) => {
         break;
       case ADD_DRAW_POINT:
         socket.emit('action', { type: 'add_draw_point', value: action.payload });
+        break;
+      case RESET_DRAW_POINT:
+        socket.emit('action', { type: 'reset_draw_point', value: action.payload });
         break;
       default:
         break;
@@ -75,6 +80,9 @@ socket.on('action', (params) => {
       break;
     case 'add_draw_point':
       store.dispatch(addDrawPoint(params.value, { propagate: false }));
+      break;
+    case 'reset_draw_point':
+      store.dispatch(resetDrawPoint(params.value, { propagate: false }));
       break;
     default:
       break;
