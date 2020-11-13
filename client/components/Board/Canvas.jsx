@@ -76,7 +76,7 @@ function Canvas({ drawing, index, recognizer }) {
       left,
     } = canvasRef.current.getBoundingClientRect();
 
-    if (ev.pointerType === 'pen') {
+    if (ev.pointerType === 'touch') {
       paint = false;
       gesture = true;
       gesturePoint.push(
@@ -85,7 +85,7 @@ function Canvas({ drawing, index, recognizer }) {
           ((ev.pageY || ev.changedTouches[0].pageY) - top) / height,
         ],
       );
-    } else if (ev.pointerType === 'touch') {
+    } else if (ev.pointerType === 'pen') {
       gesture = false;
       paint = true;
       addClick(
