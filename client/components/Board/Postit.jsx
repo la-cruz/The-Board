@@ -51,11 +51,7 @@ function Postit({ postit, index }) {
       }}
     >
       <h3 className="title-postit">{`${index}. ${postit.title}`}</h3>
-      <p>
-        { postit.text }
-        -
-        {index}
-      </p>
+      <p>{ postit.text }</p>
       <Canvas drawing={drawing} index={index} recognizer={recognizer} />
       <span style={{
         backgroundColor: postit.color,

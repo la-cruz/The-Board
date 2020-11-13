@@ -16,6 +16,10 @@ function Canvas({ drawing, index, recognizer }) {
   // Si vous utilisez des Class Components plutôt que des function Components, voir ici https://stackoverflow.com/a/54620836
   const canvasRef = useRef(null);
 
+  const preventDefault = (e) => {
+    e.preventDefault();
+  };
+
   const addClick = (x, y, dragging) => {
     clickX.push(x);
     clickY.push(y);
@@ -65,6 +69,9 @@ function Canvas({ drawing, index, recognizer }) {
   }
 
   function pointerDownHandler(ev) {
+    ev.nativeEvent.preventDefault();
+    ev.preventDefault();
+
     if (ev.pointerType === 'mouse') {
       return;
     }
@@ -98,6 +105,9 @@ function Canvas({ drawing, index, recognizer }) {
   }
 
   function pointerMoveHandler(ev) {
+    ev.nativeEvent.preventDefault();
+    ev.preventDefault();
+
     const {
       width,
       height,
@@ -123,7 +133,12 @@ function Canvas({ drawing, index, recognizer }) {
     }
   }
 
-  function pointerUpEvent() {
+  function pointerUpEvent(ev) {
+    ev.nativeEvent.preventDefault();
+    ev.preventDefault();
+    console.log(ev.nativeEvent);
+    console.log(ev);
+
     if (gesture) {
       const geste = recognizer.check(gesturePoint);
       if (geste.recognized) {
@@ -161,6 +176,11 @@ function Canvas({ drawing, index, recognizer }) {
   useEffect(() => {
     redraw();
   }, [drawing]);
+
+  useEffect(() => {
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+    return () => document.body.removeEventListener('touchmove', preventDefault);
+  }, []);
 
   return (
     <canvas
