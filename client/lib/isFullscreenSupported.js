@@ -1,4 +1,4 @@
-export default function getBrowserFullscreenElementProp() {
+export default function isFullscreenSupported() {
   if (typeof document.fullscreenElement !== 'undefined') {
     return 'fullscreenElement';
   }

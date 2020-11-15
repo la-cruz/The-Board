@@ -3,18 +3,38 @@ import PropTypes from 'prop-types';
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addDrawPoint } from '../../actions/index';
+import OneDollar from '../../lib/oneDollar';
+import {
+  circle,
+  triangle,
+  chevronLeft,
+  chevronRight,
+} from '../../data/gesture';
 
-function Canvas({ drawing, index, recognizer }) {
+function Canvas({ drawing, index }) {
   const { clickX, clickY, clickDrag } = drawing;
   const { id } = useParams();
+  const canvasRef = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
   let gesturePoint = [];
   let paint = false;
   let gesture = false;
 
-  // Si vous utilisez des Class Components plutôt que des function Components, voir ici https://stackoverflow.com/a/54620836
-  const canvasRef = useRef(null);
+  const options = {
+    score: 80, // The similarity threshold to apply the callback(s)
+    parts: 64, // The number of resampling points
+    step: 2, // The degree of one single rotation step
+    angle: 45, // The last degree of rotation
+    size: 250, // The width and height of the scaling bounding box
+  };
+
+  const recognizer = new OneDollar(options);
+
+  recognizer.add('triangle', triangle);
+  recognizer.add('circle', circle);
+  recognizer.add('chevron-left', chevronLeft);
+  recognizer.add('chevron-right', chevronRight);
 
   const preventDefault = (e) => {
     e.preventDefault();
@@ -69,9 +89,6 @@ function Canvas({ drawing, index, recognizer }) {
   }
 
   function pointerDownHandler(ev) {
-    ev.nativeEvent.preventDefault();
-    ev.preventDefault();
-
     if (ev.pointerType === 'mouse') {
       return;
     }
@@ -83,31 +100,22 @@ function Canvas({ drawing, index, recognizer }) {
       left,
     } = canvasRef.current.getBoundingClientRect();
 
+    const posX = ((ev.pageX || ev.changedTouches[0].pageX) - left) / width;
+    const posY = ((ev.pageY || ev.changedTouches[0].pageY) - top) / height;
+
     if (ev.pointerType === 'touch') {
       paint = false;
       gesture = true;
-      gesturePoint.push(
-        [
-          ((ev.pageX || ev.changedTouches[0].pageX) - left) / width,
-          ((ev.pageY || ev.changedTouches[0].pageY) - top) / height,
-        ],
-      );
+      gesturePoint.push([posX, posY]);
     } else if (ev.pointerType === 'pen') {
       gesture = false;
       paint = true;
-      addClick(
-        ((ev.pageX || ev.changedTouches[0].pageX) - left) / width,
-        ((ev.pageY || ev.changedTouches[0].pageY) - top) / height,
-        false,
-      );
+      addClick(posX, posY, false);
     }
     redraw();
   }
 
   function pointerMoveHandler(ev) {
-    ev.nativeEvent.preventDefault();
-    ev.preventDefault();
-
     const {
       width,
       height,
@@ -115,28 +123,19 @@ function Canvas({ drawing, index, recognizer }) {
       left,
     } = canvasRef.current.getBoundingClientRect();
 
+    const posX = ((ev.pageX || ev.changedTouches[0].pageX) - left) / width;
+    const posY = ((ev.pageY || ev.changedTouches[0].pageY) - top) / height;
+
     if (paint) {
-      addClick(
-        ((ev.pageX || ev.changedTouches[0].pageX) - left) / width,
-        ((ev.pageY || ev.changedTouches[0].pageY) - top) / height,
-        true,
-      );
+      addClick(posX, posY, true);
       redraw();
     } else if (gesture) {
-      gesturePoint.push(
-        [
-          ((ev.pageX || ev.changedTouches[0].pageX) - left) / width,
-          ((ev.pageY || ev.changedTouches[0].pageY) - top) / height,
-        ],
-      );
+      gesturePoint.push([posX, posY]);
       redraw();
     }
   }
 
-  function pointerUpEvent(ev) {
-    ev.nativeEvent.preventDefault();
-    ev.preventDefault();
-
+  function pointerUpEvent() {
     if (gesture) {
       const geste = recognizer.check(gesturePoint);
       if (geste.recognized) {
@@ -186,9 +185,6 @@ function Canvas({ drawing, index, recognizer }) {
       onPointerDown={pointerDownHandler}
       onPointerMove={pointerMoveHandler}
       onPointerUp={pointerUpEvent}
-      onTouchStart={pointerDownHandler}
-      onTouchMove={pointerMoveHandler}
-      onTouchEnd={pointerUpEvent}
     />
   );
 }
@@ -196,7 +192,6 @@ function Canvas({ drawing, index, recognizer }) {
 Canvas.propTypes = {
   drawing: PropTypes.instanceOf(Object).isRequired,
   index: PropTypes.number.isRequired,
-  recognizer: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default Canvas;
