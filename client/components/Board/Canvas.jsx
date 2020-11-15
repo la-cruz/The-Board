@@ -136,8 +136,6 @@ function Canvas({ drawing, index, recognizer }) {
   function pointerUpEvent(ev) {
     ev.nativeEvent.preventDefault();
     ev.preventDefault();
-    console.log(ev.nativeEvent);
-    console.log(ev);
 
     if (gesture) {
       const geste = recognizer.check(gesturePoint);

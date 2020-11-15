@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import Drawer from '@material-ui/core/Drawer';
 import Dialog from '@material-ui/core/Dialog';
+import { isMobile } from 'react-device-detect';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -75,9 +76,19 @@ function AppToolbar() {
               <HomeIcon />
             </IconButton>
           </Link>
-          <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }} startIcon={<AddBoxIcon />}>
-            Créer un Board
-          </Button>
+          {
+            isMobile
+              ? (
+                <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }}>
+                  <AddBoxIcon />
+                </Button>
+              )
+              : (
+                <Button variant="contained" color="default" onClick={() => { setIsModalOpen(true); }} startIcon={<AddBoxIcon />}>
+                  Créer un Board
+                </Button>
+              )
+          }
         </Toolbar>
       </AppBar>
       <Dialog open={isModalOpen} onClose={() => { setIsModalOpen(false); }} aria-labelledby="form-dialog-title">
